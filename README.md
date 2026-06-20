@@ -4,18 +4,15 @@ A RAG (Retrieval-Augmented Generation) chatbot that answers questions about the 
 
 ## 🛠️ Tech Stack
 
-| Component | Tool |
-|---|---|
-| Web Scraping | `requests` + `BeautifulSoup` |
-| Embeddings | `sentence-transformers` (all-MiniLM-L6-v2) |
-| Vector Database | `FAISS` |
-| LLM (local) | `Ollama` + `llama3.2` |
-| LLM (cloud) | `Groq` + `llama3-8b-8192` |
-| Web App | `Streamlit` |
+- **Scraping:** requests, BeautifulSoup
+- **Embeddings:** sentence-transformers (all-MiniLM-L6-v2)
+- **Vector DB:** FAISS
+- **LLM (local):** Ollama + llama3.2
+- **LLM (cloud):** Groq + llama3-8b-8192
+- **Web App:** Streamlit
 
 ## 📁 Project Structure
 
-```
 project/
 ├── page_name.txt        # list of URLs to scrape
 ├── scraper.py           # Step 1: scrape website pages
@@ -24,7 +21,7 @@ project/
 ├── embedder.py          # Step 4: embed chunks + build FAISS index
 ├── app.py               # Step 5: Streamlit chatbot app
 └── requirements.txt
-```
+
 
 ## 🚀 Setup & Run Locally
 
@@ -34,7 +31,7 @@ git clone https://github.com/YOUR_USERNAME/nsu-ece-chatbot.git
 cd nsu-ece-chatbot
 ```
 
-### 2. Create virtual environment
+### 2. Create a virtual environment
 ```bash
 python -m venv venv
 venv\Scripts\activate      # Windows
@@ -62,7 +59,15 @@ ollama serve
 # In another terminal
 streamlit run app.py
 ```
-
+### 6. Add your Groq API key (optional for local)
+Open `.streamlit/secrets.toml` and add your key:
+```toml
+GROQ_API_KEY = "your_groq_api_key_here"
+```
+> - If Groq key is added → app uses **Groq** (cloud, fast)
+> - If left empty → app automatically falls back to **Ollama** (local)
+> 
+> Get a free Groq API key at: https://console.groq.com
 ## ☁️ Deploy on Streamlit Cloud
 
 1. Push this repo to GitHub
@@ -74,6 +79,8 @@ GROQ_API_KEY = "your_groq_api_key_here"
 4. The app auto-detects Groq and uses it instead of Ollama ✅
 
 > Get a free Groq API key at: https://console.groq.com
+
+
 
 ## 💡 How It Works
 
