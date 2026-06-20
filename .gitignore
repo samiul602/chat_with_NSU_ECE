@@ -9,7 +9,7 @@ chunked_data.json
 cleaned_chunks.json
 
 # FAISS index (large binary files)
-faiss_index/
+#faiss_index/
 
 
 # Streamlit secrets (contains API keys!)
