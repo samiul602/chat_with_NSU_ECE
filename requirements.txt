@@ -3,10 +3,10 @@ requests==2.31.0
 beautifulsoup4==4.12.3
 
 # Embeddings
-sentence-transformers==3.0.1
+sentence-transformers==2.7.0
 
 # Vector database
-faiss-cpu==1.8.0
+faiss-cpu==1.13.2
 
 # LLM - Groq API
 groq==0.9.0
