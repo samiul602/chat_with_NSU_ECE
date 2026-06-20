@@ -1,0 +1,38 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Scraped data (large files, no need to push)
+scraped_data.json
+chunked_data.json
+cleaned_chunks.json
+
+# FAISS index (large binary files)
+faiss_index/
+
+
+# Streamlit secrets (contains API keys!)
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Streamlit secrets
+.streamlit/
+
+# Scraped/processed data files
+scraped_data.json
+scraped_data.txt
+chunked_data.json
+cleaned_chunks.json
+
