@@ -39,7 +39,7 @@ h1 {
             
    /* Sidebar */
     [data-testid="stSidebar"] {
-        # background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+     /* background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); */
     }
     
     [data-testid="stSidebar"] h2 {
@@ -59,7 +59,7 @@ h1 {
             
      /* Links */
     a {
-        color: var(--accent) !important;
+       /* color: var(--accent) !important; */
         text-decoration: none;
     }
     
