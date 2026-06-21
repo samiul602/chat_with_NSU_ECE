@@ -1,5 +1,7 @@
 # 🤖 NSU ECE Department Chatbot
 
+🔗 **Live App:** https://chatwithnsuece.streamlit.app/
+
 A RAG (Retrieval-Augmented Generation) chatbot that answers questions about the ECE Department at North South University using content scraped directly from their website.
 
 ## 🛠️ Tech Stack
