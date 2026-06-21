@@ -12,7 +12,7 @@ FAISS_DIR    = "faiss_index"
 MODEL_NAME   = "all-MiniLM-L6-v2"
 OLLAMA_URL   = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3.2"
-GROQ_MODEL   = "llama3-8b-8192"
+GROQ_MODEL   = "llama-3.1-8b-instant"
 TOP_K        = 4
 
 # ── Detect environment ────────────────────────────────────────────────────────
