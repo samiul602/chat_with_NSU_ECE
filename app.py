@@ -18,6 +18,54 @@ TOP_K        = 4
 # ── Detect environment ────────────────────────────────────────────────────────
 # If GROQ_API_KEY exists in Streamlit secrets or env → use Groq (cloud)
 # Otherwise → use Ollama (local)
+
+# 👇 CSS injection (PUT HERE)
+st.markdown("""
+            
+<style>
+             /* Title */
+h1 {
+    text-align: center;
+}
+           
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    opacity: 0.8;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+            
+   /* Sidebar */
+    [data-testid="stSidebar"] {
+        # background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    [data-testid="stSidebar"] h2 {
+        color: #3545ab !important;
+    }
+            [data-testid="stSidebar"] h1 {
+        color: rgb(122, 122, 243) !important;
+    }
+      
+            
+
+      /* Dividers */
+     hr {
+        border-color: rgba(0, 217, 255, 0.2) !important;
+    }
+            
+            
+     /* Links */
+    a {
+        color: var(--accent) !important;
+        text-decoration: none;
+    }
+    
+</style>
+""", unsafe_allow_html=True)
+
 def get_mode():
     try:
         key = st.secrets["GROQ_API_KEY"]
@@ -52,7 +100,6 @@ def load_resources():
 
     return index, metadata, model
 
-
 # ── Retrieve relevant chunks ──────────────────────────────────────────────────
 def retrieve(query, index, metadata, model, top_k=TOP_K):
     query_embedding = model.encode(
@@ -73,7 +120,6 @@ def retrieve(query, index, metadata, model, top_k=TOP_K):
             "text"  : chunk["text"]
         })
     return results
-
 
 # ── Build prompt ──────────────────────────────────────────────────────────────
 def build_prompt(query, chunks):
@@ -97,7 +143,6 @@ User Question: {query}
 Answer:"""
     return prompt
 
-
 # ── Call Ollama (local) ───────────────────────────────────────────────────────
 def ask_ollama(prompt):
     try:
@@ -120,7 +165,6 @@ def ask_ollama(prompt):
     except Exception as e:
         return None, f"❌ Ollama error: {e}"
 
-
 # ── Call Groq (cloud) ─────────────────────────────────────────────────────────
 def ask_groq(prompt, api_key):
     try:
@@ -135,14 +179,31 @@ def ask_groq(prompt, api_key):
     except Exception as e:
         return None, f"❌ Groq error: {e}"
 
-
 # ── UI ────────────────────────────────────────────────────────────────────────
 def main():
     mode, api_key = get_mode()
 
     # Header
-    st.title("🤖 NSU ECE Chatbot")
-    st.caption("Ask me anything about the ECE Department at North South University!")
+    st.markdown("""
+    <div class="hero">
+
+    <h1>🤖 NSU ECE Chatbot</h1>
+
+    <div class="subtitle">
+    Get instant answers about the ECE Department at North South University
+    </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1,col2,col3=st.columns([1,1,1])
+
+    with col2:
+        if mode=="groq":
+            st.success("☁️ Cloud Mode")
+        else:
+            st.info("💻 Local Mode")
+
     st.divider()
 
     # Load resources
@@ -223,36 +284,62 @@ def main():
 
     # Sidebar
     with st.sidebar:
-        st.header("ℹ️ About")
+        st.markdown("## ℹ️ About This Bot")
         st.markdown("""
-        This chatbot answers questions about the **ECE Department** 
-        at **North South University (NSU)**.
+        This chatbot uses **RAG** (Retrieval-Augmented Generation) to answer questions about the ECE Department at North South University.
         
         **How it works:**
-        1. Your question is converted to a vector
-        2. FAISS finds the most relevant content
-        3. LLM generates an answer from that content
+        1. Your question is converted to a semantic vector
+        2. FAISS finds the most relevant content from our knowledge base
+        3. An AI model generates a natural answer
+        4. Sources are provided for verification
         """)
 
         st.divider()
-        st.header("⚙️ Settings")
-        st.markdown(f"**Embedding Model:** `{MODEL_NAME}`")
-        if mode == "groq":
-            st.markdown(f"**LLM:** `{GROQ_MODEL}` via ☁️ Groq")
-        else:
-            st.markdown(f"**LLM:** `{OLLAMA_MODEL}` via 💻 Ollama (local)")
-        st.markdown(f"**Chunks retrieved:** `{TOP_K}`")
+
+        st.markdown("## ⚙️ System Info")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("🧠 Embeddings", "all-MiniLM")
+            st.metric("📦 Chunks", f"{len(metadata)}")
+        with col2:
+            llm_name = "Groq" if mode == "groq" else "Ollama"
+            st.metric("🤖 LLM", llm_name)
+            st.metric("🔎 Top Results", f"{TOP_K}")
 
         st.divider()
-        if st.button("🗑️ Clear Chat"):
-            st.session_state.messages = [
-                {
-                    "role"    : "assistant",
-                    "content" : "Hi! 👋 Chat cleared. Ask me anything about NSU ECE!"
-                }
-            ]
-            st.rerun()
 
+        st.markdown("## 🛠️ Quick Actions")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🗑️ Clear Chat", use_container_width=True):
+                st.session_state.messages = [
+                    {
+                        "role"    : "assistant",
+                        "content" : "👋 Chat cleared! Ready for new questions."
+                    }
+                ]
+                st.rerun()
+        
+        with col2:
+            if st.button("🔄 Refresh", use_container_width=True):
+                st.rerun()
+
+        st.divider()
+
+        st.markdown("## 📱 About NSU ECE")
+        st.markdown("""
+        **North South University**
+        
+        Department of Electrical and Computer Engineering
+        
+        🌐 [ece.northsouth.edu](https://ece.northsouth.edu)
+        📍 Bashundhara, Dhaka, Bangladesh
+        """)
+
+        st.divider()
+        st.caption("Made with ❤️ using RAG + Streamlit")
 
 if __name__ == "__main__":
     main()
