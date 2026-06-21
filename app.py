@@ -18,7 +18,12 @@ TOP_K        = 4
 # ── Detect environment ────────────────────────────────────────────────────────
 # If GROQ_API_KEY exists in Streamlit secrets or env → use Groq (cloud)
 # Otherwise → use Ollama (local)
-
+# ── Page Setup ────────────────────────────────────────────────────────────────
+st.set_page_config(
+    page_title = "NSU ECE Chatbot",
+    page_icon  = "🤖",
+    layout     = "centered"
+)
 # 👇 CSS injection (PUT HERE)
 st.markdown("""
             
@@ -79,11 +84,11 @@ def get_mode():
     return "ollama", None
 
 # ── Page Setup ────────────────────────────────────────────────────────────────
-st.set_page_config(
-    page_title = "NSU ECE Chatbot",
-    page_icon  = "🤖",
-    layout     = "centered"
-)
+# st.set_page_config(
+#     page_title = "NSU ECE Chatbot",
+#     page_icon  = "🤖",
+#     layout     = "centered"
+# )
 
 # ── Load FAISS + Embedding Model (cached) ─────────────────────────────────────
 @st.cache_resource
